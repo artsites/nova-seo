@@ -16,10 +16,11 @@ class CreateSeoTable extends Migration
         Schema::create('seo', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('model');
-            $table->string('title');
-            $table->string('keywords');
-            $table->text('description');
-            $table->text('text');
+            $table->string('title')->nullable();
+            $table->string('link')->nullable();
+            $table->string('keywords')->nullable();
+            $table->text('description')->nullable();
+            $table->text('text')->nullable();
             $table->timestamps();
         });
     }
