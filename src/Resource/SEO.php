@@ -2,11 +2,10 @@
 
 namespace App\Nova;
 
-use Benjaminhirsch\NovaSlugField\Slug;
-use Benjaminhirsch\NovaSlugField\TextWithSlug;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class SEO extends Resource
@@ -23,7 +22,7 @@ class SEO extends Resource
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -31,7 +30,7 @@ class SEO extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name'
+        'id', 'title', 'url'
     ];
 
     /**
@@ -44,8 +43,11 @@ class SEO extends Resource
     {
         return [
             ID::make()->sortable(),
-            TextWithSlug::make('Name', 'name')->slug('slug')->rules('required'),
-            Slug::make('Slug', 'slug')->disableAutoUpdateWhenUpdating()->rules('required', 'unique:districts,slug,{{resourceId}}'),
+            Text::make('link'),
+            Text::make('title'),
+            Text::make('keywords'),
+            Textarea::make('description'),
+            Textarea::make('text'),
         ];
     }
 

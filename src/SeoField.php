@@ -42,7 +42,7 @@ class SeoField extends Field
         parent::resolve($resource, $attribute);
 
         if (!$this->value) {
-            $this->value = (object)[
+            $this->value = (object) [
                 'title' => '',
                 'description' => '',
                 'keywords' => '',
@@ -65,39 +65,34 @@ class SeoField extends Field
 
         $defaultValue = isset($this->meta['defaultValue']) ? $this->meta['defaultValue'] : null;
 
-        $model::saved(function($model) use($request, $requestAttribute, $relationship, $defaultValue){
+        $model::saved(function ($model) use ($request, $requestAttribute, $relationship, $defaultValue) {
             if ($request->exists($requestAttribute) && is_string($request[$requestAttribute])) {
                 $value = json_decode($request[$requestAttribute]);
 
                 $title = $value->title != '' ? $value->title :  $model->$defaultValue;
 
-                // if($model->seo){
-                //     $relationship->fill([
-                //         'link'        => isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null,
-                //         'title'       => $title,
-                //         'description' => $value->description ?? null,
-                //         'keywords'    => $value->keywords ?? null,
-                //     ]);
-                //     $relationship->save();
-                // }
-                // else{
-                    $model->seo()->updateOrCreate(
-                        ['link'        => isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null],
-                        ['title'       => $title],
-                        ['description' => $value->description ?? null],
-                        ['keywords'    => $value->keywords ?? null],
-                    );
-                // }
+                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
+
+                $model->seo()->updateOrCreate(
+                    ['link' => $link],
+                    [
+                        'title'        => $title,
+                        'link'          => $link,
+                        'description'   => $value->description ?? null,
+                        'keywords'      => $value->keywords ?? null
+                    ]
+                );
             }
-        });        
-        
+        });
     }
 
-    public function routeName($name){
+    public function routeName($name)
+    {
         return $this->withMeta(['route' => $name]);
     }
 
-    public function defaultValue($fieldName){
-        return $this->withMeta(['defaultValue' => $fieldName]);
+    public function defaultValue($value)
+    {
+        return $this->withMeta(['defaultValue' => $value]);
     }
 }
