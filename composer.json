@@ -1,5 +1,5 @@
 {
-    "name": "arthedain/seo-field",
+    "name": "artsites/seo-field",
     "description": "A Laravel Nova field.",
     "keywords": [
         "laravel",
@@ -11,13 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Arthedain\\SeoField\\": "src/"
+            "Artsites\\SeoField\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Arthedain\\SeoField\\FieldServiceProvider"
+                "Artsites\\SeoField\\FieldServiceProvider"
             ]
         }
     }
