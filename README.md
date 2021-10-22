@@ -2,7 +2,7 @@
 
 ### Installation
 ```sh
-composer require artsites/seo-field
+composer require artsites/nova-seo
 ```
 
 ### Publish
