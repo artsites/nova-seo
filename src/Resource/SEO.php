@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Nova;
+namespace ArtSites\NovaSeo\Resources;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
 
 class SEO extends Resource
 {
@@ -15,7 +15,7 @@ class SEO extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\SEO';
+    public static $model = \ArtSites\NovaSeo\Models\SEO::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

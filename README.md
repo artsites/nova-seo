@@ -7,19 +7,19 @@ composer require artsites/nova-seo
 
 ### Publish
 ```sh
-php artisan vendor:publish --provider="Artsites\SeoField\FieldServiceProvider" --tag="migration"
+php artisan vendor:publish --provider="Artsites\NovaSeo\FieldServiceProvider" --tag="migration"
 
-php artisan vendor:publish --provider="Artsites\SeoField\FieldServiceProvider" --tag="model"
+php artisan vendor:publish --provider="Artsites\NovaSeo\FieldServiceProvider" --tag="model"
 
-php artisan vendor:publish --provider="Artsites\SeoField\FieldServiceProvider" --tag="nova-resource"
+php artisan vendor:publish --provider="Artsites\NovaSeo\FieldServiceProvider" --tag="nova-resource"
 ```
 
 ### Resource 
 
 ```sh
-use # Artsites\SeoField\SeoField;
+use # Artsites\NovaSeo\NovaSeo;
 // in your resource 
-SeoField::make()
+NovaSeo::make()
 ```
 
 #### Methods

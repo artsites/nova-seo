@@ -1,6 +1,6 @@
 <?php
 
-namespace Arthedain\SeoField\Traits;
+namespace ArtSites\NovaSeo\Traits;
 
 trait SeoTrait{
 

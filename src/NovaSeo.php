@@ -1,12 +1,12 @@
 <?php
 
-namespace Arthedain\SeoField;
+namespace ArtSites\NovaSeo;
 
-use App\Models\SEO;
+use ArtSites\Models\SEO;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class SeoField extends Field
+class NovaSeo extends Field
 {
     /**
      * The field's component.

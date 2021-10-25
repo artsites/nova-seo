@@ -1,5 +1,5 @@
 {
-    "name": "artsites/seo-field",
+    "name": "artsites/nova-seo",
     "description": "A Laravel Nova field.",
     "keywords": [
         "laravel",
@@ -11,14 +11,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Artsites\\SeoField\\": "src/"
+            "ArtSites\\NovaSeo\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Artsites\\SeoField\\FieldServiceProvider"
+                "ArtSites\\NovaSeo\\FieldServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0-dev"
         }
     }
 }

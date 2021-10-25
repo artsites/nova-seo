@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace ArtSites\NovaSeo\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
