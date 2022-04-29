@@ -8,5 +8,5 @@ class SEO extends Model
 {
     protected $table = 'seo';
 
-    protected $fillable = ['title', 'keywords', 'description', 'link'];
+    protected $fillable = ['title', 'description', 'link', 'is_noindex'];
 }
