@@ -1,6 +1,6 @@
 <?php
 
-namespace ArtSites\NovaSeo\Resources;
+namespace App\Nova;
 
 use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Http\Request;
