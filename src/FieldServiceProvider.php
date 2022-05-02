@@ -2,7 +2,6 @@
 
 namespace ArtSites\NovaSeo;
 
-use ArtSites\NovaSeo\Resources\SEO;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
@@ -17,7 +16,7 @@ class FieldServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            "/var/www/html/vendor/artsites/nova-seo/src/migrations/2020_03_10_120159_create_seo_table.php" => database_path('/migrations/2020_03_10_120159_create_seo_table.php'),
+                __DIR__.'/migrations/2020_03_10_120159_create_seo_table.php' => database_path('/migrations/2020_03_10_120159_create_seo_table.php'),
         ], 'migration');
         $this->publishes([
             __DIR__.'/Models/SEO.php' => app_path('/Models/SEO.php'),

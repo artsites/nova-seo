@@ -17,10 +17,10 @@ class CreateSeoTable extends Migration
             $table->id();
             $table->nullableMorphs('model');
             $table->string('title')->nullable();
-            $table->string('link')->nullable();
-            $table->string('keywords')->nullable();
+            $table->string('link', 2000)->nullable();
             $table->text('description')->nullable();
-            $table->text('text')->nullable();
+            $table->boolean('is_noindex')->default(0);
+            $table->longText('text')->nullable();
             $table->timestamps();
         });
     }

@@ -2,7 +2,7 @@
 
 namespace ArtSites\NovaSeo;
 
-use ArtSites\Models\SEO;
+use App\Models\SEO;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -45,7 +45,6 @@ class NovaSeo extends Field
             $this->value = (object) [
                 'title' => '',
                 'description' => '',
-                'keywords' => '',
             ];
         }
     }
@@ -66,22 +65,34 @@ class NovaSeo extends Field
         $defaultValue = isset($this->meta['defaultValue']) ? $this->meta['defaultValue'] : null;
 
         $model::saved(function ($model) use ($request, $requestAttribute, $relationship, $defaultValue) {
+
             if ($request->exists($requestAttribute) && is_string($request[$requestAttribute])) {
                 $value = json_decode($request[$requestAttribute]);
-
                 $title = $value->title != '' ? $value->title :  $model->$defaultValue;
 
                 $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
 
-                $model->seo()->updateOrCreate(
-                    ['link' => $link],
-                    [
-                        'title'        => $title,
-                        'link'          => $link,
-                        'description'   => $value->description ?? null,
-                        'keywords'      => $value->keywords ?? null
-                    ]
-                );
+                $seo = SEO::query()->where('model_id', $model->id)->doesntExist();
+
+                if($seo){
+                    $model->seo()->create(
+                        [
+                            'title'        => $title,
+                            'h1'            => $model?->name,
+                            'link'          => $link,
+                            'description'   => $value?->description,
+                        ]
+                    );
+                }else{
+                    $model->seo()->update(
+                        [
+                            'title'         => $title,
+                            'h1'            => $model?->name,
+                            'link'          => $link,
+                            'description'   => $value?->description,
+                        ]
+                    );
+                }
             }
         });
     }
