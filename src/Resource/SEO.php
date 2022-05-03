@@ -13,7 +13,7 @@ use Laravel\Nova\Resource;
 
 class SEO extends Resource
 {
-    public static string $model = \ArtSites\NovaSeo\Models\SEO::class;
+    public static string $model = \App\Models\SEO::class;
 
     public static $title = 'id';
 
@@ -36,5 +36,10 @@ class SEO extends Resource
             Textarea::make('description')->hideFromIndex(),
             NovaTinyMCE::make('text')->hideFromIndex(),
         ];
+    }
+
+    public static function label(): string
+    {
+        return 'SEO';
     }
 }
