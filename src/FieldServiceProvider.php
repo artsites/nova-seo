@@ -16,18 +16,18 @@ class FieldServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-                __DIR__.'/migrations/2020_03_10_120159_create_seo_table.php' => database_path('/migrations/2020_03_10_120159_create_seo_table.php'),
+            __DIR__ . '/migrations/2020_03_10_120159_create_seo_table.php' => database_path('/migrations/2020_03_10_120159_create_seo_table.php'),
         ], 'migration');
         $this->publishes([
-            __DIR__.'/Models/SEO.php' => app_path('/Models/SEO.php'),
+            __DIR__ . '/Models/SEO.php' => app_path('/Models/SEO.php'),
         ], 'model');
         $this->publishes([
-            __DIR__.'/Resource/SEO.php' => app_path('/Nova/SEO.php'),
+            __DIR__ . '/Resource/SEO.php' => app_path('/Nova/SEO.php'),
         ], 'nova-resource');
 
         Nova::serving(function (ServingNova $event) {
-            Nova::script('seo-field', __DIR__.'/../dist/js/field.js');
-            Nova::style('seo-field', __DIR__.'/../dist/css/field.css');
+            Nova::script('seo-field', __DIR__ . '/../dist/js/field.js');
+            Nova::style('seo-field', __DIR__ . '/../dist/css/field.css');
         });
     }
 

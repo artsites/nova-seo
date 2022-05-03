@@ -17,6 +17,7 @@ class CreateSeoTable extends Migration
             $table->id();
             $table->nullableMorphs('model');
             $table->string('title')->nullable();
+            $table->string('h1')->nullable();
             $table->string('link', 2000)->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_noindex')->default(0);

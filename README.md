@@ -7,11 +7,11 @@ composer require artsites/nova-seo
 
 ### Publish
 ```sh
-php artisan vendor:publish --provider="Artsites\NovaSeo\FieldServiceProvider" --tag="migration"
+php artisan vendor:publish --provider="ArtSites\NovaSeo\FieldServiceProvider" --tag="migration"
 
-php artisan vendor:publish --provider="Artsites\NovaSeo\FieldServiceProvider" --tag="model"
+php artisan vendor:publish --provider="ArtSites\NovaSeo\FieldServiceProvider" --tag="model"
 
-php artisan vendor:publish --provider="Artsites\NovaSeo\FieldServiceProvider" --tag="nova-resource"
+php artisan vendor:publish --provider="ArtSites\NovaSeo\FieldServiceProvider" --tag="nova-resource"
 ```
 
 ### Resource 
