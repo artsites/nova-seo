@@ -38,7 +38,6 @@ class NovaSeo extends Field
      */
     public function resolve($resource, $attribute = null)
     {
-        // dd($resource->seo);
         parent::resolve($resource, $attribute);
 
         if (!$this->value) {
@@ -70,7 +69,7 @@ class NovaSeo extends Field
                 $value = json_decode($request[$requestAttribute]);
                 $title = $value->title != '' ? $value->title :  $model->$defaultValue;
 
-                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
+                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug], false) : null;
 
                 $seo = SEO::query()->where('model_id', $model->id)->doesntExist();
 

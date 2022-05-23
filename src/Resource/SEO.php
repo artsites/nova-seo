@@ -6,7 +6,6 @@ use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Resource;
@@ -23,11 +22,15 @@ class SEO extends Resource
 
     public function fields(Request $request)
     {
+        $link = $this->link ? "<a href='".env('APP_URL').$this->link."' target='_blank'>".env('APP_URL').$this->link."</a>" : '';
+
         return [
             Text::make('link')
                 ->displayUsing(fn($link) => Str::limit($link, 110, '...'))
                 ->onlyOnIndex(),
             Textarea::make('link')
+                ->help($link ?? '')
+                ->rules('required', 'max:1000')
                 ->rows(2),
 
             Text::make('title')->hideFromIndex(),
