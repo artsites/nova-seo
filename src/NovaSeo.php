@@ -69,7 +69,7 @@ class NovaSeo extends Field
                 $value = json_decode($request[$requestAttribute]);
                 $title = $value->title != '' ? $value->title :  $model->$defaultValue;
 
-                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug], false) : null;
+                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
 
                 $seo = SEO::query()->where('model_id', $model->id)->doesntExist();
 
