@@ -71,7 +71,10 @@ class NovaSeo extends Field
 
                 $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
 
-                $seo = SEO::query()->where('model_id', $model->id)->doesntExist();
+                $seo = SEO::query()
+                    ->where('model_id', $model->id)
+                    ->where('model_type', get_class($model))
+                    ->doesntExist();
 
                 if($seo){
                     $model->seo()->create(
