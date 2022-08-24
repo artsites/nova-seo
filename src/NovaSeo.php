@@ -67,6 +67,7 @@ class NovaSeo extends Field
 
             if ($request->exists($requestAttribute) && is_string($request[$requestAttribute])) {
                 $value = json_decode($request[$requestAttribute]);
+                dd($request[$requestAttribute], $requestAttribute);
                 $title = $value->title != '' ? $value->title :  $model->$defaultValue;
 
                 $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;

@@ -334,19 +334,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ["resource", "resourceName", "resourceId", "field"],
-
     created: function created() {
-        // console.log(this.field);
-
-
+        //
     },
     mounted: function mounted() {
-        // console.log(this);
-
+        //
     },
 
     computed: {
@@ -357,14 +352,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             object.name = 'Title';
             return object;
         },
-
-        // dataKeywords(){
-        //     let object = {};
-        //     Object.assign(object, this.field)
-        //     object.value = object.value.keywords;
-        //     object.name = 'Keywords';
-        //     return object;
-        // },
         dataDescription: function dataDescription() {
             var object = {};
             Object.assign(object, this.field);
