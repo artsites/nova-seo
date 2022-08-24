@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Resource;
 
 class SEO extends Resource
 {
@@ -17,12 +16,12 @@ class SEO extends Resource
     public static $title = 'id';
 
     public static $search = [
-        'id', 'title', 'url'
+        'id', 'title', 'link'
     ];
 
     public function fields(Request $request)
     {
-        $link = $this->link ? "<a href='".env('APP_URL').$this->link."' target='_blank'>".env('APP_URL').$this->link."</a>" : '';
+        $link = $this->link ? "<a href='".$this->link."' target='_blank'>".$this->link."</a>" : '';
 
         return [
             Text::make('link')
@@ -30,13 +29,14 @@ class SEO extends Resource
                 ->onlyOnIndex(),
             Textarea::make('link')
                 ->help($link ?? '')
-                ->rules('required', 'max:1000')
+                ->rules('required', 'unique:seo,link,{{resourceId}}', 'max:750')
                 ->rows(2),
 
-            Text::make('title')->hideFromIndex(),
-            Text::make('h1')->hideFromIndex(),
+            Text::make('title')->rules('max:191')->hideFromIndex(),
+            Text::make('h1')->rules('max:191')->hideFromIndex(),
             Boolean::make('noindex, nofollow', 'is_noindex')->hideFromIndex(),
             Textarea::make('description')->hideFromIndex(),
+
             NovaTinyMCE::make('text')->hideFromIndex(),
         ];
     }
