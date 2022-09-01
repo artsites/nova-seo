@@ -34,7 +34,6 @@ class SEO extends Resource
 
             Text::make('title')->rules('max:191')->hideFromIndex(),
             Text::make('h1')->rules('max:191')->hideFromIndex(),
-            Boolean::make('noindex, nofollow', 'is_noindex')->hideFromIndex(),
             Textarea::make('description')->hideFromIndex(),
 
             NovaTinyMCE::make('text')->hideFromIndex(),

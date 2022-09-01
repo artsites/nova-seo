@@ -20,7 +20,6 @@ class CreateSeoTable extends Migration
             $table->string('h1')->nullable();
             $table->string('link', 2000)->nullable();
             $table->text('description')->nullable();
-            $table->boolean('is_noindex')->default(0);
             $table->longText('text')->nullable();
             $table->timestamps();
         });
