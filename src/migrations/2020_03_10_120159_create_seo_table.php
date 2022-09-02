@@ -6,30 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSeoTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('seo', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('model');
-            $table->string('title')->nullable();
-            $table->string('h1')->nullable();
-            $table->string('link', 2000)->nullable();
+            $table->string('title', 255)->nullable();
+            $table->string('h1', 255)->nullable();
+            $table->string('link', 750)->unique()->nullable();
+            $table->boolean('is_noindex')->default(0);
+            $table->boolean('is_nofollow')->default(0);
             $table->text('description')->nullable();
             $table->longText('text')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('seo');

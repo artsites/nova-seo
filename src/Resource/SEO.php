@@ -29,12 +29,15 @@ class SEO extends Resource
                 ->onlyOnIndex(),
             Textarea::make('link')
                 ->help($link ?? '')
-                ->rules('required', 'unique:seo,link,{{resourceId}}', 'max:750')
+                ->rules('required', 'url', 'unique:seo,link,{{resourceId}}', 'max:750')
                 ->rows(2),
 
             Text::make('title')->rules('max:191')->hideFromIndex(),
             Text::make('h1')->rules('max:191')->hideFromIndex(),
             Textarea::make('description')->hideFromIndex(),
+
+            Boolean::make('noindex', 'is_noindex')->default(0)->hideFromIndex(),
+            Boolean::make('nofollow', 'is_nofollow')->default(0)->hideFromIndex(),
 
             NovaTinyMCE::make('text')->hideFromIndex(),
         ];
