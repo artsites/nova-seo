@@ -67,9 +67,15 @@ class NovaSeo extends Field
 
             if ($request->exists($requestAttribute) && is_string($request[$requestAttribute])) {
                 $value = json_decode($request[$requestAttribute]);
-                $title = $value->title != '' ? $value->title :  $model->$defaultValue;
+                $title = $value->title != '' ? $value->title : $model->$defaultValue;
 
                 $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
+
+                ////////////////////////////////////////////////////////
+                if(!$link && ($this->meta['propertyRouteName'] ?? false)) {
+                    $link = route(app()->getLocale().'.'.$model->status->key.'.'.$this->meta['propertyRouteName'], ['slug' => $model->slug]);
+                }
+                ////////////////////////////////////////////////////////
 
                 $seo = SEO::query()
                     ->where('model_id', $model->id)
@@ -102,6 +108,11 @@ class NovaSeo extends Field
     public function routeName($name)
     {
         return $this->withMeta(['route' => $name]);
+    }
+
+    public function routeByPropertyWithStatus($propertyRouteName)
+    {
+        return $this->withMeta(['propertyRouteName' => $propertyRouteName]);
     }
 
     public function defaultValue($value)
