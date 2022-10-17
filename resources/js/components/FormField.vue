@@ -11,6 +11,12 @@
                     placeholder="Title"
                     v-model="value.title"
                 />
+                <div class="flex space-x-2">
+                    <p v-if="hasError" class="flex-1 help-text error-text my-2 text-danger">
+                        {{ firstError }}
+                    </p>
+                    <charcounter :value="value.title ?? ''" :max-chars="maxChars" :warning-threshold="titleWarningAt"></charcounter>
+                </div>
             </div>
             <div class="form-group mb-3">
                 <label class="mb-1 block">Description:</label>
@@ -22,6 +28,12 @@
                     placeholder="Description"
                     v-model="value.description"
                 />
+                <div class="flex space-x-2">
+                    <p v-if="hasError" class="flex-1 help-text error-text my-2 text-danger">
+                        {{ firstError }}
+                    </p>
+                    <charcounter :value="value.description ?? ''" :max-chars="maxChars" :warning-threshold="descriptionWarningAt"></charcounter>
+                </div>
             </div>
         </template>
     </default-field>
@@ -29,11 +41,24 @@
 
 <script>
 import {FormField, HandlesValidationErrors} from "laravel-nova";
+import Charcounter from './Charcounter.vue';
 
 export default {
     mixins: [FormField, HandlesValidationErrors],
 
     props: ["resourceName", "resourceId", "field"],
+
+    components: {
+        'charcounter': Charcounter,
+    },
+
+    data() {
+        return {
+            maxChars: 191,
+            titleWarningAt: 70,
+            descriptionWarningAt: 140,
+        }
+    },
 
     methods: {
         /*
