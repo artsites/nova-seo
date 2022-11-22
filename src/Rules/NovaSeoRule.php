@@ -19,12 +19,12 @@ class NovaSeoRule implements Rule
     {
         $data = json_decode($value);
 
-        if(strlen($data->title) > 191) {
+        if(strlen($data?->title ?? '') > 191) {
             $this->message = 'Максимальная длина поля "Title" - 191 символ';
             return false;
         }
 
-        if(strlen($data->description) > 5000) {
+        if(strlen($data?->description ?? '') > 5000) {
             $this->message = 'Максимальная длина поля "Description" - 5000 символов';
             return false;
         }

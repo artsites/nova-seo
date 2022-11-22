@@ -1,6 +1,17 @@
 <template>
     <default-field :field="field" :errors="errors">
         <template slot="field">
+
+            <div v-if="field.has_auto_title" class="form-group mb-3">
+                <label class="mb-1 block">Auto Title:</label>
+                <input
+                    :id="field.name+'-auto_title'"
+                    type="checkbox"
+                    class="checkbox mt-2"
+                    v-model="value.auto_title"
+                />
+            </div>
+
             <div class="form-group mb-3">
                 <label class="mb-1 block">Title:</label>
                 <input
@@ -10,6 +21,8 @@
                     :class="errorClasses"
                     placeholder="Title"
                     v-model="value.title"
+                    :readonly="!!value.auto_title"
+                    :disabled="!!value.auto_title"
                 />
                 <div class="flex space-x-2">
                     <p v-if="hasError" class="flex-1 help-text error-text my-2 text-danger">
@@ -18,6 +31,17 @@
                     <charcounter :value="value.title ?? ''" :max-chars="maxChars" :warning-threshold="titleWarningAt"></charcounter>
                 </div>
             </div>
+
+            <div v-if="field.has_auto_description" class="form-group mb-3">
+                <label class="mb-1 block">Auto Description:</label>
+                <input
+                    :id="field.name+'-auto_description'"
+                    type="checkbox"
+                    class="checkbox mt-2"
+                    v-model="value.auto_description"
+                />
+            </div>
+
             <div class="form-group mb-3">
                 <label class="mb-1 block">Description:</label>
                 <textarea
@@ -27,6 +51,8 @@
                     :class="errorClasses"
                     placeholder="Description"
                     v-model="value.description"
+                    :readonly="!!value.auto_description"
+                    :disabled="!!value.auto_description"
                 />
                 <div class="flex space-x-2">
                     <p v-if="hasError" class="flex-1 help-text error-text my-2 text-danger">
@@ -35,6 +61,7 @@
                     <charcounter :value="value.description ?? ''" :max-chars="maxChars" :warning-threshold="descriptionWarningAt"></charcounter>
                 </div>
             </div>
+
         </template>
     </default-field>
 </template>
@@ -61,13 +88,20 @@ export default {
     },
 
     methods: {
-        /*
+        /**
          * Set the initial, internal value for the field.
          */
         setInitialValue() {
-            console.log(this.value);
+            this.value = this.field.value;
 
-            this.value = this.field.value || "";
+            if(!this.value) {
+                this.value = {
+                    auto_title: !!this.field.auto_title,
+                    title: this.field.title ?? '',
+                    auto_description: !!this.field.auto_description,
+                    description: this.field.description ?? '',
+                }
+            }
         },
 
         /**

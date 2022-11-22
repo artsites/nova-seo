@@ -102,11 +102,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    /*
+    /**
      * Set the initial, internal value for the field.
      */setInitialValue: function setInitialValue() {
-      console.log(this.value);
-      this.value = this.field.value || "";
+      this.value = this.field.value;
+      if (!this.value) {
+        var _this$field$title, _this$field$descripti;
+        this.value = {
+          auto_title: !!this.field.auto_title,
+          title: (_this$field$title = this.field.title) !== null && _this$field$title !== void 0 ? _this$field$title : '',
+          auto_description: !!this.field.auto_description,
+          description: (_this$field$descripti = this.field.description) !== null && _this$field$descripti !== void 0 ? _this$field$descripti : ''
+        };
+      }
     },
     /**
      * Fill the given FormData object with the field's internal value.
@@ -221,7 +229,44 @@ var render = function render() {
     }
   }, [_c("template", {
     slot: "field"
-  }, [_c("div", {
+  }, [_vm.field.has_auto_title ? _c("div", {
+    staticClass: "form-group mb-3"
+  }, [_c("label", {
+    staticClass: "mb-1 block"
+  }, [_vm._v("Auto Title:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.value.auto_title,
+      expression: "value.auto_title"
+    }],
+    staticClass: "checkbox mt-2",
+    attrs: {
+      id: _vm.field.name + "-auto_title",
+      type: "checkbox"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.value.auto_title) ? _vm._i(_vm.value.auto_title, null) > -1 : _vm.value.auto_title
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.value.auto_title,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.value, "auto_title", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.value, "auto_title", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.value, "auto_title", $$c);
+        }
+      }
+    }
+  })]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "form-group mb-3"
   }, [_c("label", {
     staticClass: "mb-1 block"
@@ -237,7 +282,9 @@ var render = function render() {
     attrs: {
       id: _vm.field.name + "-title",
       type: "text",
-      placeholder: "Title"
+      placeholder: "Title",
+      readonly: !!_vm.value.auto_title,
+      disabled: !!_vm.value.auto_title
     },
     domProps: {
       value: _vm.value.title
@@ -258,7 +305,44 @@ var render = function render() {
       "max-chars": _vm.maxChars,
       "warning-threshold": _vm.titleWarningAt
     }
-  })], 1)]), _vm._v(" "), _c("div", {
+  })], 1)]), _vm._v(" "), _vm.field.has_auto_description ? _c("div", {
+    staticClass: "form-group mb-3"
+  }, [_c("label", {
+    staticClass: "mb-1 block"
+  }, [_vm._v("Auto Description:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.value.auto_description,
+      expression: "value.auto_description"
+    }],
+    staticClass: "checkbox mt-2",
+    attrs: {
+      id: _vm.field.name + "-auto_description",
+      type: "checkbox"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.value.auto_description) ? _vm._i(_vm.value.auto_description, null) > -1 : _vm.value.auto_description
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.value.auto_description,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.value, "auto_description", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.value, "auto_description", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.value, "auto_description", $$c);
+        }
+      }
+    }
+  })]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "form-group mb-3"
   }, [_c("label", {
     staticClass: "mb-1 block"
@@ -274,7 +358,9 @@ var render = function render() {
     attrs: {
       id: _vm.field.name + "-description",
       type: "text",
-      placeholder: "Description"
+      placeholder: "Description",
+      readonly: !!_vm.value.auto_description,
+      disabled: !!_vm.value.auto_description
     },
     domProps: {
       value: _vm.value.description

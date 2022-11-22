@@ -15,37 +15,11 @@ class NovaSeo extends Field
      */
     public $component = 'seo-field';
 
-
-    /**
-     * Create a new field.
-     *
-     * @param  string  $name
-     * @param  string|callable|null  $attribute
-     * @param  callable|null  $resolveCallback
-     * @return void
-     */
-    public function __construct($name = "SEO", $attribute = null, callable $resolveCallback = null)
+    public function __construct($name = 'SEO', $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
-    }
-
-    /**
-     * Resolve the field's value.
-     *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
-     * @return void
-     */
-    public function resolve($resource, $attribute = null)
-    {
-        parent::resolve($resource, $attribute);
-
-        if (!$this->value) {
-            $this->value = (object) [
-                'title' => '',
-                'description' => '',
-            ];
-        }
+        $this->withMeta(['auto_title' => false]);
+        $this->withMeta(['auto_description' => false]);
     }
 
     /**
@@ -59,64 +33,73 @@ class NovaSeo extends Field
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute = 'seo')
     {
-        $relationship = $model->{$attribute};
+        $model::saved(function ($model) use ($request, $requestAttribute) {
+            $model::withoutEvents(function() use($model, $request, $requestAttribute) {
 
-        $defaultValue = isset($this->meta['defaultValue']) ? $this->meta['defaultValue'] : null;
+            if (!$request->exists($requestAttribute) && !is_string($request[$requestAttribute])) return;
+            $data = json_decode($request[$requestAttribute]);
 
-        $model::saved(function ($model) use ($request, $requestAttribute, $relationship, $defaultValue) {
+            $title = $data?->title ?? '';
+            $autoTitle = $data?->auto_title ?? false;
+            $description = $data?->description ?? '';
+            $autoDescription = $data?->auto_description ?? false;
+            $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
 
-            if ($request->exists($requestAttribute) && is_string($request[$requestAttribute])) {
-                $value = json_decode($request[$requestAttribute]);
-                $title = $value->title != '' ? $value->title : $model->$defaultValue;
-
-                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
-
-                ////////////////////////////////////////////////////////
-                if(!$link && ($this->meta['propertyRouteName'] ?? false)) {
-                    $link = route(app()->getLocale().'.'.$model->status->key.'.'.$this->meta['propertyRouteName'], ['slug' => $model->slug]);
-                }
-                ////////////////////////////////////////////////////////
-
-                $seo = SEO::query()
-                    ->where('model_id', $model->id)
-                    ->where('model_type', get_class($model))
-                    ->doesntExist();
-
-                if($seo){
-                    $model->seo()->create(
-                        [
-                            'title'        => $title,
-                            'h1'            => $model?->name,
-                            'link'          => $link,
-                            'description'   => $value?->description,
-                        ]
-                    );
-                }else{
-                    $model->seo()->update(
-                        [
-                            'title'         => $title,
-                            'h1'            => $model?->name,
-                            'link'          => $link,
-                            'description'   => $value?->description,
-                        ]
-                    );
-                }
+            ////////////////////////////////////////////////////////
+            if(!$link && ($this->meta['propertyRouteName'] ?? false)) {
+                $link = route(app()->getLocale().'.'.$model->status->key.'.'.$this->meta['propertyRouteName'], ['slug' => $model->slug]);
             }
+            ////////////////////////////////////////////////////////
+
+            $seo = SEO::query()
+                ->where('model_id', $model->id)
+                ->where('model_type', get_class($model))
+                ->first();
+
+            if($seo){
+                $model->seo()->update(
+                    [
+                        'title'                 => $title,
+                        'auto_title'            => $autoTitle,
+                        'h1'                    => $seo->h1,
+                        'link'                  => $link,
+                        'description'           => $description,
+                        'auto_description'      => $autoDescription,
+                    ]
+                );
+            } else {
+                $model->seo()->create(
+                    [
+                        'title'                 => $title,
+                        'auto_title'            => $autoTitle,
+                        'h1'                    => null,
+                        'link'                  => $link,
+                        'description'           => $description,
+                        'auto_description'      => $autoDescription,
+                    ]
+                );
+            }
+        });
         });
     }
 
-    public function routeName($name)
+    public function routeName($name): NovaSeo
     {
         return $this->withMeta(['route' => $name]);
     }
 
-    public function routeByPropertyWithStatus($propertyRouteName)
+    public function routeByPropertyWithStatus($propertyRouteName): NovaSeo
     {
         return $this->withMeta(['propertyRouteName' => $propertyRouteName]);
     }
 
-    public function defaultValue($value)
+    public function autoTitle(bool $isAuto = true): NovaSeo
     {
-        return $this->withMeta(['defaultValue' => $value]);
+        return $this->withMeta(['auto_title' => $isAuto, 'has_auto_title' => true]);
+    }
+
+    public function autoDescription(bool $isAuto = true): NovaSeo
+    {
+        return $this->withMeta(['auto_description' => $isAuto, 'has_auto_description' => true]);
     }
 }
