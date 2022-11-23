@@ -93,12 +93,16 @@ export default {
          */
         setInitialValue() {
             this.value = this.field.value;
+            if(this.value?.auto_title && this.value?.auto_description) {
+                this.value.auto_title = this.value.auto_title == '1' ? true : false
+                this.value.auto_description = this.value.auto_description == '1' ? true : false
+            }
 
             if(!this.value) {
                 this.value = {
-                    auto_title: !!this.field.auto_title,
+                    auto_title: true,
                     title: this.field.title ?? '',
-                    auto_description: !!this.field.auto_description,
+                    auto_description: true,
                     description: this.field.description ?? '',
                 }
             }
