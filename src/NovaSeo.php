@@ -18,10 +18,12 @@ class NovaSeo extends Field
     public function __construct($name = 'SEO', $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
-        $this->withMeta(['has_auto_title' => false]);
-        $this->withMeta(['auto_title' => false]);
-        $this->withMeta(['has_auto_description' => false]);
-        $this->withMeta(['auto_description' => false]);
+        $this->withMeta([
+            'has_auto_title' => false,
+            'auto_title' => false,
+            'has_auto_description' => false,
+            'auto_description' => false,
+        ]);
     }
 
     /**
@@ -38,50 +40,50 @@ class NovaSeo extends Field
         $model::saved(function ($model) use ($request, $requestAttribute) {
             $model::withoutEvents(function() use($model, $request, $requestAttribute) {
 
-            if (!$request->exists($requestAttribute) && !is_string($request[$requestAttribute])) return;
-            $data = json_decode($request[$requestAttribute]);
+                if (!$request->exists($requestAttribute) && !is_string($request[$requestAttribute])) return;
+                $data = json_decode($request[$requestAttribute]);
 
-            $title = $data?->title ?? '';
-            $autoTitle = $data?->auto_title ?? false;
-            $description = $data?->description ?? '';
-            $autoDescription = $data?->auto_description ?? false;
-            $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
+                $title = $data?->title ?? '';
+                $autoTitle = $data?->auto_title ?? false;
+                $description = $data?->description ?? '';
+                $autoDescription = $data?->auto_description ?? false;
+                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
 
-            ////////////////////////////////////////////////////////
-            if(!$link && ($this->meta['propertyRouteName'] ?? false)) {
-                $link = route(app()->getLocale().'.'.$model->status->key.'.'.$this->meta['propertyRouteName'], ['slug' => $model->slug]);
-            }
-            ////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////
+                if(!$link && ($this->meta['propertyRouteName'] ?? false)) {
+                    $link = route(app()->getLocale().'.'.$model->status->key.'.'.$this->meta['propertyRouteName'], ['slug' => $model->slug]);
+                }
+                ////////////////////////////////////////////////////////
 
-            $seo = SEO::query()
-                ->where('model_id', $model->id)
-                ->where('model_type', get_class($model))
-                ->first();
+                $seo = SEO::query()
+                    ->where('model_id', $model->id)
+                    ->where('model_type', get_class($model))
+                    ->first();
 
-            if($seo){
-                $model->seo()->update(
-                    [
-                        'title'                 => $title,
-                        'auto_title'            => $autoTitle,
-                        'h1'                    => $seo->h1,
-                        'link'                  => $link,
-                        'description'           => $description,
-                        'auto_description'      => $autoDescription,
-                    ]
-                );
-            } else {
-                $model->seo()->create(
-                    [
-                        'title'                 => $title,
-                        'auto_title'            => $autoTitle,
-                        'h1'                    => null,
-                        'link'                  => $link,
-                        'description'           => $description,
-                        'auto_description'      => $autoDescription,
-                    ]
-                );
-            }
-        });
+                if($seo){
+                    $model->seo()->update(
+                        [
+                            'auto_title'            => $autoTitle,
+                            'title'                 => $title,
+                            'h1'                    => $seo->h1,
+                            'link'                  => $link,
+                            'auto_description'      => $autoDescription,
+                            'description'           => $description,
+                        ]
+                    );
+                } else {
+                    $model->seo()->create(
+                        [
+                            'auto_title'            => $autoTitle,
+                            'title'                 => $title,
+                            'h1'                    => null,
+                            'link'                  => $link,
+                            'auto_description'      => $autoDescription,
+                            'description'           => $description,
+                        ]
+                    );
+                }
+            });
         });
     }
 

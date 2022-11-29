@@ -95,7 +95,7 @@ export default {
             this.value = this.field.value;
 
             if(this.value?.auto_title) {
-                this.value.auto_description = this.value.auto_description == '1' ? true : false
+                this.value.auto_title = this.value.auto_title == '1' ? true : false
             }
 
             if(this.value?.auto_description) {

@@ -108,7 +108,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this$value, _this$value2;
       this.value = this.field.value;
       if ((_this$value = this.value) !== null && _this$value !== void 0 && _this$value.auto_title) {
-        this.value.auto_description = this.value.auto_description == '1' ? true : false;
+        this.value.auto_title = this.value.auto_title == '1' ? true : false;
       }
       if ((_this$value2 = this.value) !== null && _this$value2 !== void 0 && _this$value2.auto_description) {
         this.value.auto_description = this.value.auto_description == '1' ? true : false;
