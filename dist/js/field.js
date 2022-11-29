@@ -107,16 +107,20 @@ __webpack_require__.r(__webpack_exports__);
      */setInitialValue: function setInitialValue() {
       var _this$value, _this$value2;
       this.value = this.field.value;
-      if ((_this$value = this.value) !== null && _this$value !== void 0 && _this$value.auto_title && (_this$value2 = this.value) !== null && _this$value2 !== void 0 && _this$value2.auto_description) {
-        this.value.auto_title = this.value.auto_title == '1' ? true : false;
+      if ((_this$value = this.value) !== null && _this$value !== void 0 && _this$value.auto_title) {
+        this.value.auto_description = this.value.auto_description == '1' ? true : false;
+      }
+      if ((_this$value2 = this.value) !== null && _this$value2 !== void 0 && _this$value2.auto_description) {
         this.value.auto_description = this.value.auto_description == '1' ? true : false;
       }
       if (!this.value) {
         var _this$field$title, _this$field$descripti;
         this.value = {
-          auto_title: true,
+          has_auto_title: this.field.has_auto_title,
+          auto_title: this.field.auto_title,
           title: (_this$field$title = this.field.title) !== null && _this$field$title !== void 0 ? _this$field$title : '',
-          auto_description: true,
+          has_auto_description: this.field.has_auto_description,
+          auto_description: this.field.auto_description,
           description: (_this$field$descripti = this.field.description) !== null && _this$field$descripti !== void 0 ? _this$field$descripti : ''
         };
       }

@@ -93,16 +93,22 @@ export default {
          */
         setInitialValue() {
             this.value = this.field.value;
-            if(this.value?.auto_title && this.value?.auto_description) {
-                this.value.auto_title = this.value.auto_title == '1' ? true : false
+
+            if(this.value?.auto_title) {
+                this.value.auto_description = this.value.auto_description == '1' ? true : false
+            }
+
+            if(this.value?.auto_description) {
                 this.value.auto_description = this.value.auto_description == '1' ? true : false
             }
 
             if(!this.value) {
                 this.value = {
-                    auto_title: true,
+                    has_auto_title: this.field.has_auto_title,
+                    auto_title: this.field.auto_title,
                     title: this.field.title ?? '',
-                    auto_description: true,
+                    has_auto_description: this.field.has_auto_description,
+                    auto_description: this.field.auto_description,
                     description: this.field.description ?? '',
                 }
             }

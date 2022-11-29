@@ -18,7 +18,9 @@ class NovaSeo extends Field
     public function __construct($name = 'SEO', $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
+        $this->withMeta(['has_auto_title' => false]);
         $this->withMeta(['auto_title' => false]);
+        $this->withMeta(['has_auto_description' => false]);
         $this->withMeta(['auto_description' => false]);
     }
 
