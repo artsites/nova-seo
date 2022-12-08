@@ -47,13 +47,19 @@ class NovaSeo extends Field
                 $autoTitle = $data?->auto_title ?? false;
                 $description = $data?->description ?? '';
                 $autoDescription = $data?->auto_description ?? false;
-                $link = isset($this->meta['route']) ? route($this->meta['route'], ['slug' => $model->slug]) : null;
 
-                ////////////////////////////////////////////////////////
-                if(!$link && ($this->meta['propertyRouteName'] ?? false)) {
-                    $link = route(app()->getLocale().'.'.$model->status->key.'.'.$this->meta['propertyRouteName'], ['slug' => $model->slug]);
+                $link = null;
+                if(isset($this->meta['route'])) {
+                    $lang = '';
+                    if(isset($this->meta['hasLangs']) && $this->meta['hasLangs']) {
+                        $lang = app()->getLocale().'.';
+                    }
+                    if(isset($this->meta['relation'])) {
+                        $link = route($lang.$model->{$this->meta['relation']}->key.'.'.$this->meta['route'], ['slug' => $model->slug]);
+                    } else {
+                        $link = route($lang.$this->meta['route'], ['slug' => $model->slug]);
+                    }
                 }
-                ////////////////////////////////////////////////////////
 
                 $seo = SEO::query()
                     ->where('model_id', $model->id)
@@ -87,14 +93,19 @@ class NovaSeo extends Field
         });
     }
 
-    public function routeName($name): NovaSeo
+    public function routeName(string $name): NovaSeo
     {
         return $this->withMeta(['route' => $name]);
     }
 
-    public function routeByPropertyWithStatus($propertyRouteName): NovaSeo
+    public function routeRelation(string $relation): NovaSeo
     {
-        return $this->withMeta(['propertyRouteName' => $propertyRouteName]);
+        return $this->withMeta(['relation' => $relation]);
+    }
+
+    public function hasLangs(bool $hasLangs = true): NovaSeo
+    {
+        return $this->withMeta(['hasLangs' => $hasLangs]);
     }
 
     public function autoTitle(bool $isAuto = true): NovaSeo
