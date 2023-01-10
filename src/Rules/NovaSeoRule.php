@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Rules;
-
 namespace ArtSites\NovaSeo\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
@@ -24,8 +22,8 @@ class NovaSeoRule implements Rule
             return false;
         }
 
-        if(mb_strlen($data?->description ?? '') > 5000) {
-            $this->message = 'Максимальная длина поля "Description" - 5000 символов';
+        if(mb_strlen($data?->description ?? '') > 500) {
+            $this->message = 'Максимальная длина поля "Description" - 500 символов';
             return false;
         }
 

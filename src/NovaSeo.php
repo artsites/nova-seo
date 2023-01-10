@@ -2,7 +2,7 @@
 
 namespace ArtSites\NovaSeo;
 
-use App\Models\SEO;
+use App\Models\Seo;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -38,58 +38,46 @@ class NovaSeo extends Field
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute = 'seo')
     {
         $model::saved(function ($model) use ($request, $requestAttribute) {
-            $model::withoutEvents(function() use($model, $request, $requestAttribute) {
+            if (!$request->exists($requestAttribute) && !is_string($request[$requestAttribute])) return;
+            $data = json_decode($request[$requestAttribute]);
 
-                if (!$request->exists($requestAttribute) && !is_string($request[$requestAttribute])) return;
-                $data = json_decode($request[$requestAttribute]);
+            $title = $data?->title ?? '';
+            $autoTitle = $data?->auto_title ?? false;
+            $description = $data?->description ?? '';
+            $autoDescription = $data?->auto_description ?? false;
 
-                $title = $data?->title ?? '';
-                $autoTitle = $data?->auto_title ?? false;
-                $description = $data?->description ?? '';
-                $autoDescription = $data?->auto_description ?? false;
-
-                $link = null;
-                if(isset($this->meta['route'])) {
-                    $lang = '';
-                    if(isset($this->meta['hasLangs']) && $this->meta['hasLangs']) {
-                        $lang = app()->getLocale().'.';
-                    }
-                    if(isset($this->meta['relation'])) {
-                        $link = route($lang.$model->{$this->meta['relation']}->key.'.'.$this->meta['route'], ['slug' => $model->slug]);
-                    } else {
-                        $link = route($lang.$this->meta['route'], ['slug' => $model->slug]);
-                    }
-                }
-
-                $seo = SEO::query()
-                    ->where('model_id', $model->id)
-                    ->where('model_type', get_class($model))
-                    ->first();
-
-                if($seo){
-                    $model->seo()->update(
-                        [
-                            'auto_title'            => $autoTitle,
-                            'title'                 => $title,
-                            'h1'                    => $seo->h1,
-                            'link'                  => $link,
-                            'auto_description'      => $autoDescription,
-                            'description'           => $description,
-                        ]
-                    );
+            $link = null;
+            if(isset($this->meta['route'])) {
+                if(isset($this->meta['relation'])) {
+                    $link = route(app()->getLocale().'.'.$model->{$this->meta['relation']}->key.'.'.$this->meta['route'], ['slug' => $model->slug]);
                 } else {
-                    $model->seo()->create(
-                        [
-                            'auto_title'            => $autoTitle,
-                            'title'                 => $title,
-                            'h1'                    => null,
-                            'link'                  => $link,
-                            'auto_description'      => $autoDescription,
-                            'description'           => $description,
-                        ]
-                    );
+                    $link = route(app()->getLocale().'.'.$this->meta['route'], ['slug' => $model->slug]);
                 }
-            });
+            }
+
+            $seo = Seo::query()
+                ->where('model_id', $model->id)
+                ->where('model_type', get_class($model))
+                ->first();
+
+            if($seo){
+                $seo->auto_title            = $autoTitle;
+                $seo->title                 = $title;
+                $seo->link                  = $link;
+                $seo->auto_description      = $autoDescription;
+                $seo->description           = $description;
+                $seo->save();
+            } else {
+                $model->seo()->create(
+                    [
+                        'auto_title'            => $autoTitle,
+                        'title'                 => $title,
+                        'link'                  => $link,
+                        'auto_description'      => $autoDescription,
+                        'description'           => $description,
+                    ]
+                );
+            }
         });
     }
 
@@ -101,11 +89,6 @@ class NovaSeo extends Field
     public function routeRelation(string $relation): NovaSeo
     {
         return $this->withMeta(['relation' => $relation]);
-    }
-
-    public function hasLangs(bool $hasLangs = true): NovaSeo
-    {
-        return $this->withMeta(['hasLangs' => $hasLangs]);
     }
 
     public function autoTitle(bool $isAuto = true): NovaSeo

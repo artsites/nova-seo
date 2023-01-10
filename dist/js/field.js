@@ -96,8 +96,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      maxChars: 191,
+      maxTitleChars: 191,
       titleWarningAt: 70,
+      maxDescriptionChars: 500,
       descriptionWarningAt: 140
     };
   },
@@ -306,12 +307,10 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("div", {
     staticClass: "flex space-x-2"
-  }, [_vm.hasError ? _c("p", {
-    staticClass: "flex-1 help-text error-text my-2 text-danger"
-  }, [_vm._v("\n                    " + _vm._s(_vm.firstError) + "\n                ")]) : _vm._e(), _vm._v(" "), _c("charcounter", {
+  }, [_c("charcounter", {
     attrs: {
       value: (_vm$value$title = _vm.value.title) !== null && _vm$value$title !== void 0 ? _vm$value$title : "",
-      "max-chars": _vm.maxChars,
+      "max-chars": _vm.maxTitleChars,
       "warning-threshold": _vm.titleWarningAt
     }
   })], 1)]), _vm._v(" "), _vm.field.has_auto_description ? _c("div", {
@@ -382,12 +381,10 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("div", {
     staticClass: "flex space-x-2"
-  }, [_vm.hasError ? _c("p", {
-    staticClass: "flex-1 help-text error-text my-2 text-danger"
-  }, [_vm._v("\n                    " + _vm._s(_vm.firstError) + "\n                ")]) : _vm._e(), _vm._v(" "), _c("charcounter", {
+  }, [_c("charcounter", {
     attrs: {
       value: (_vm$value$description = _vm.value.description) !== null && _vm$value$description !== void 0 ? _vm$value$description : "",
-      "max-chars": _vm.maxChars,
+      "max-chars": _vm.maxDescriptionChars,
       "warning-threshold": _vm.descriptionWarningAt
     }
   })], 1)])])], 2);

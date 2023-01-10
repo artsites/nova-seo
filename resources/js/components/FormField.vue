@@ -25,10 +25,7 @@
                     :disabled="!!value.auto_title"
                 />
                 <div class="flex space-x-2">
-                    <p v-if="hasError" class="flex-1 help-text error-text my-2 text-danger">
-                        {{ firstError }}
-                    </p>
-                    <charcounter :value="value.title ?? ''" :max-chars="maxChars" :warning-threshold="titleWarningAt"></charcounter>
+                    <charcounter :value="value.title ?? ''" :max-chars="maxTitleChars" :warning-threshold="titleWarningAt"></charcounter>
                 </div>
             </div>
 
@@ -55,10 +52,7 @@
                     :disabled="!!value.auto_description"
                 />
                 <div class="flex space-x-2">
-                    <p v-if="hasError" class="flex-1 help-text error-text my-2 text-danger">
-                        {{ firstError }}
-                    </p>
-                    <charcounter :value="value.description ?? ''" :max-chars="maxChars" :warning-threshold="descriptionWarningAt"></charcounter>
+                    <charcounter :value="value.description ?? ''" :max-chars="maxDescriptionChars" :warning-threshold="descriptionWarningAt"></charcounter>
                 </div>
             </div>
 
@@ -81,8 +75,10 @@ export default {
 
     data() {
         return {
-            maxChars: 191,
+            maxTitleChars: 191,
             titleWarningAt: 70,
+
+            maxDescriptionChars: 500,
             descriptionWarningAt: 140,
         }
     },

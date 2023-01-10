@@ -1,4 +1,4 @@
-# Art-Sites/Seo-Field
+# Art-Sites/Nova-Seo
 
 ### Installation
 ```sh
@@ -28,6 +28,12 @@ NovaSeo::make()
  * route must have parameter slug 
 ->routeName(string)
 
-/* Enter default value
-->defaultValue(string)
+/* Enter route relation
+->routeRelation(string)
+
+/* Has auto generation title
+->autoTitle(bool)
+
+/* Has auto generation description
+->autoDescription(bool)
 ```

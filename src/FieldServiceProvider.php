@@ -19,10 +19,10 @@ class FieldServiceProvider extends ServiceProvider
             __DIR__ . '/migrations/2020_03_10_120159_create_seo_table.php' => database_path('/migrations/2020_03_10_120159_create_seo_table.php'),
         ], 'migration');
         $this->publishes([
-            __DIR__ . '/Models/SEO.php' => app_path('/Models/SEO.php'),
+            __DIR__ . '/Models/Seo.php' => app_path('/Models/Seo.php'),
         ], 'model');
         $this->publishes([
-            __DIR__ . '/Resource/SEO.php' => app_path('/Nova/SEO.php'),
+            __DIR__ . '/Resource/Seo.php' => app_path('/Nova/Seo.php'),
         ], 'nova-resource');
 
         Nova::serving(function (ServingNova $event) {
