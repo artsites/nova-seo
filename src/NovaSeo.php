@@ -2,7 +2,7 @@
 
 namespace ArtSites\NovaSeo;
 
-use App\Models\Seo;
+use App\Models\SEO;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -55,7 +55,7 @@ class NovaSeo extends Field
                 }
             }
 
-            $seo = Seo::query()
+            $seo = SEO::query()
                 ->where('model_id', $model->id)
                 ->where('model_type', get_class($model))
                 ->first();

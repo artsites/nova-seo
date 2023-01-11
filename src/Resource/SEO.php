@@ -12,11 +12,11 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 
-class Seo extends Resource
+class SEO extends Resource
 {
     use TabsOnEdit;
 
-    public static string $model = \App\Models\Seo::class;
+    public static string $model = \App\Models\SEO::class;
 
     public static $title = 'id';
 

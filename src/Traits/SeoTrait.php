@@ -6,7 +6,7 @@ trait SeoTrait
 {
 
     public function seo(){
-        return $this->morphOne(\App\Models\Seo::class, 'model');
+        return $this->morphOne(\App\Models\SEO::class, 'model');
     }
 
 }

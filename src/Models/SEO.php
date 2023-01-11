@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Seo extends Model
+class SEO extends Model
 {
     protected $table = 'seo';
     protected $guarded = ['id'];
