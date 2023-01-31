@@ -60,24 +60,24 @@ class NovaSeo extends Field
                 ->where('model_type', get_class($model))
                 ->first();
 
-            if($seo){
-                $seo->auto_title            = $autoTitle;
-                $seo->title                 = $title;
-                $seo->link                  = $link;
-                $seo->auto_description      = $autoDescription;
-                $seo->description           = $description;
-                $seo->save();
-            } else {
-                $model->seo()->create(
+            SEO::withoutEvents(function () use($seo, $model, $autoTitle, $title, $link, $autoDescription, $description) {
+                SEO::query()->updateOrCreate(
                     [
-                        'auto_title'            => $autoTitle,
-                        'title'                 => $title,
-                        'link'                  => $link,
-                        'auto_description'      => $autoDescription,
-                        'description'           => $description,
-                    ]
-                );
-            }
+                        'model_type' => $seo?->model_type,
+                        'model_id' => $seo?->model_id,
+                    ],
+                    [
+                        'locale' => app()->getLocale(),
+                        'model_type' => get_class($model),
+                        'model_id' => $model->id,
+                        'auto_title' => $autoTitle,
+                        'title' => $title,
+                        'link' => $link,
+                        'auto_description' => $autoDescription,
+                        'description' => $description,
+                    ]);
+            });
+
         });
     }
 
