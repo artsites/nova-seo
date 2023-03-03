@@ -47,11 +47,11 @@ class NovaSeo extends Field
             $autoDescription = $data?->auto_description ?? false;
 
             $link = null;
-            if(isset($this->meta['route'])) {
-                if(isset($this->meta['relation'])) {
-                    $link = route(app()->getLocale().'.'.$model->{$this->meta['relation']}()->first()->key.'.'.$this->meta['route'], ['slug' => $model->slug]);
+            if (isset($this->meta['route'])) {
+                if (isset($this->meta['relation'])) {
+                    $link = route(app()->getLocale() . '.' . $model->{$this->meta['relation']}->key . '.' . $this->meta['route'], ['slug' => $model->slug]);
                 } else {
-                    $link = route(app()->getLocale().'.'.$this->meta['route'], ['slug' => $model->slug]);
+                    $link = route(app()->getLocale() . '.' . $this->meta['route'], ['slug' => $model->slug]);
                 }
             }
 
@@ -60,13 +60,17 @@ class NovaSeo extends Field
                 ->where('model_type', get_class($model))
                 ->first();
 
-            SEO::withoutEvents(function () use($seo, $model, $autoTitle, $title, $link, $autoDescription, $description) {
-                SEO::query()->updateOrCreate(
-                    [
-                        'model_type' => $seo?->model_type,
-                        'model_id' => $seo?->model_id,
-                    ],
-                    [
+            SEO::withoutEvents(function () use ($seo, $model, $autoTitle, $title, $link, $autoDescription, $description) {
+                if ($seo) {
+                    $seo->fill([
+                        'auto_title' => $autoTitle,
+                        'title' => $title,
+                        'link' => $link,
+                        'auto_description' => $autoDescription,
+                        'description' => $description,
+                    ])->save();
+                } else {
+                    $model->seo()->create([
                         'locale' => app()->getLocale(),
                         'model_type' => get_class($model),
                         'model_id' => $model->id,
@@ -76,6 +80,7 @@ class NovaSeo extends Field
                         'auto_description' => $autoDescription,
                         'description' => $description,
                     ]);
+                }
             });
 
         });
