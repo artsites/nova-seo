@@ -49,7 +49,7 @@ class NovaSeo extends Field
             $link = null;
             if (isset($this->meta['route'])) {
                 if (isset($this->meta['relation'])) {
-                    $link = route(app()->getLocale() . '.' . $model->{$this->meta['relation']}->key . '.' . $this->meta['route'], ['slug' => $model->slug]);
+                    $link = route(app()->getLocale() . '.' . $model->{$this->meta['relation']}()->first()->key . '.' . $this->meta['route'], ['slug' => $model->slug]);
                 } else {
                     $link = route(app()->getLocale() . '.' . $this->meta['route'], ['slug' => $model->slug]);
                 }
