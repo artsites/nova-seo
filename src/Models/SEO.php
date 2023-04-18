@@ -10,8 +10,10 @@ class SEO extends Model
     protected $table = 'seo';
     protected $guarded = ['id'];
 
-    protected static function booted()
+    protected static function boot()
     {
+        parent::boot();
+
         static::addGlobalScope('locale', function (Builder $builder) {
             $builder->where('locale', app()->getLocale());
         });
