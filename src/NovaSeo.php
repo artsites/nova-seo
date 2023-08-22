@@ -1,8 +1,9 @@
 <?php
 
-namespace ArtSites\NovaSeo;
+namespace Artsites\NovaSeo;
 
 use App\Models\SEO;
+use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -24,16 +25,18 @@ class NovaSeo extends Field
             'has_auto_description' => false,
             'auto_description' => false,
         ]);
+        $this->parameterName = 'slug';
     }
 
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string $requestAttribute
+     * @param object $model
+     * @param string $attribute
      * @return void
+     * @throws \Exception
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute = 'seo')
     {
@@ -55,9 +58,17 @@ class NovaSeo extends Field
                     $value = $value === 'rent' ? 'rent' : 'sale';
                     /** fix for sale-sold without redirect */
 
-                    $link = route(app()->getLocale() . '.' . $value . '.' . $this->meta['route'], ['slug' => $model->slug]);
+                    $route_name = app()->getLocale() . '.' . $value . '.' . $this->meta['route'];
+
+                    $this->defineRouteParameterName($route_name);
+
+                    $link = route($route_name, [$this->parameterName => $model->slug]);
                 } else {
-                    $link = route(app()->getLocale() . '.' . $this->meta['route'], ['slug' => $model->slug]);
+                    $route_name = app()->getLocale() . '.' . $this->meta['route'];
+
+                    $this->defineRouteParameterName($route_name);
+
+                    $link = route($route_name, [$this->parameterName => $model->slug]);
                 }
             }
 
@@ -110,5 +121,22 @@ class NovaSeo extends Field
     public function autoDescription(bool $isAuto = true): NovaSeo
     {
         return $this->withMeta(['auto_description' => $isAuto, 'has_auto_description' => true]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function defineRouteParameterName($routeName): void
+    {
+        $route = Route::getRoutes()->getByName($routeName);
+
+        if ($route) {
+            $parametersNames = $route->parameterNames();
+            if(isset($parametersNames[0]) && !empty($parametersNames[0])) {
+                $this->parameterName = $parametersNames[0];
+            }else{
+                throw new \Exception('Parameter name if the route: '.$routeName . " should not be empty, it should contain a slug");
+            }
+        }
     }
 }

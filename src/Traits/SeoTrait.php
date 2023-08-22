@@ -1,6 +1,6 @@
 <?php
 
-namespace ArtSites\NovaSeo\Traits;
+namespace Artsites\NovaSeo\Traits;
 
 trait SeoTrait
 {

@@ -1,7 +1,8 @@
 <?php
 
-namespace ArtSites\NovaSeo;
+namespace Artsites\NovaSeo;
 
+use Artsites\NovaSeo\Rules\NovaSeoRule;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;

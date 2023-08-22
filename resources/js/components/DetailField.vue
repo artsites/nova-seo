@@ -1,13 +1,11 @@
 <template>
-<div>
-	<panel-item :field="dataTitle"></panel-item>
-	<panel-item :field="dataDescription"></panel-item>
-    </div>
+    <PanelItem :index="index" :field="dataTitle"></PanelItem>
+    <PanelItem :index="index" :field="dataDescription"></PanelItem>
 </template>
 
 <script>
 export default {
-    props: ["resource", "resourceName", "resourceId", "field"],
+    props: ['index', "resource", "resourceName", "resourceId", "field"],
     created(){
         //
     },

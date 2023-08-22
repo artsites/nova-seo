@@ -11,17 +11,19 @@
     },
     "autoload": {
         "psr-4": {
-            "ArtSites\\NovaSeo\\": "src/"
+            "Artsites\\NovaSeo\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "ArtSites\\NovaSeo\\FieldServiceProvider"
+                "Artsites\\NovaSeo\\FieldServiceProvider"
             ]
-        },
-        "branch-alias": {
-            "dev-master": "1.0-dev"
         }
-    }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

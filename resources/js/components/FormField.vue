@@ -1,6 +1,6 @@
 <template>
-    <default-field :field="field" :errors="errors">
-        <template slot="field">
+    <DefaultField :field="field" :errors="errors" :show-help-text="showHelpText" :full-width-content="fullWidthContent">
+        <template #field>
 
             <div v-if="field.has_auto_title" class="form-group mb-3">
                 <label class="mb-1 block">Auto Title:</label>
@@ -25,7 +25,8 @@
                     :disabled="!!value.auto_title"
                 />
                 <div class="flex space-x-2">
-                    <charcounter :value="value.title ?? ''" :max-chars="maxTitleChars" :warning-threshold="titleWarningAt"></charcounter>
+                    <charcounter :value="value.title ?? ''" :max-chars="maxTitleChars"
+                                 :warning-threshold="titleWarningAt"></charcounter>
                 </div>
             </div>
 
@@ -52,12 +53,13 @@
                     :disabled="!!value.auto_description"
                 />
                 <div class="flex space-x-2">
-                    <charcounter :value="value.description ?? ''" :max-chars="maxDescriptionChars" :warning-threshold="descriptionWarningAt"></charcounter>
+                    <charcounter :value="value.description ?? ''" :max-chars="maxDescriptionChars"
+                                 :warning-threshold="descriptionWarningAt"></charcounter>
                 </div>
             </div>
 
         </template>
-    </default-field>
+    </DefaultField>
 </template>
 
 <script>
@@ -90,15 +92,15 @@ export default {
         setInitialValue() {
             this.value = this.field.value;
 
-            if(this.value?.auto_title) {
+            if (this.value?.auto_title) {
                 this.value.auto_title = this.value.auto_title == '1' ? true : false
             }
 
-            if(this.value?.auto_description) {
+            if (this.value?.auto_description) {
                 this.value.auto_description = this.value.auto_description == '1' ? true : false
             }
 
-            if(!this.value) {
+            if (!this.value) {
                 this.value = {
                     has_auto_title: this.field.has_auto_title,
                     auto_title: this.field.auto_title,

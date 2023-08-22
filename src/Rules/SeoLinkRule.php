@@ -1,6 +1,6 @@
 <?php
 
-namespace ArtSites\NovaSeo\Rules;
+namespace Artsites\NovaSeo\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 

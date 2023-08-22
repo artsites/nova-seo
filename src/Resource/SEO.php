@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use ArtSites\NovaSeo\Rules\SeoLinkRule;
+use Artsites\NovaSeo\Rules\SeoLinkRule;
 use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\TabsOnEdit;
